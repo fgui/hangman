@@ -2,7 +2,8 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/clojurescript "1.7.170"]
                  [reagent "0.5.1"]
-                 [re-frame "0.6.0"]]
+                 [re-frame "0.6.0"]
+                 [com.cemerick/piggieback "0.2.1"]]
 
   :min-lein-version "2.5.3"
 
@@ -38,4 +39,7 @@
                                    :output-to "resources/public/js/compiled/app.js"
                                    :optimizations :advanced
                                    :closure-defines {goog.DEBUG false}
-                                   :pretty-print false}}]})
+                                   :pretty-print false}}]}
+
+  :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
+  )
