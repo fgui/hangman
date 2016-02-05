@@ -1,14 +1,24 @@
 (ns hangman.views
-    (:require [re-frame.core :as re-frame]))
+  (:require [re-frame.core :as re-frame]
+            [hangman.game :as game]))
+
+(defn on-key-press [event]
+  (re-frame/dispatch [:try-letter (char (.-which event))])
+  )
 
 (defn main-panel []
-  (let [display-word (re-frame/subscribe [:display-word])]
+  (let [word (re-frame/subscribe [:word])]
     (fn []
       [:div
        {:tab-index 0
-        :on-key-press (fn [e]
-                        (re-frame/dispatch
-                         [:try-letter
-                          (char (.-which e))]))}
-       "hangmag: " @display-word
-       ])))
+        :on-key-press on-key-press}
+       [:table
+        [:td
+         [:img {:src (str "img/Hangman-" (game/num-errors @word) ".png")
+                :width "100"}]]
+        [:td
+         [:table
+          [:tr [:td "Word:"] [:td (game/display-word @word)]]
+          [:tr [:td "Misses:"] [:td (game/display-misses @word)]]
+          (when (game/game-over? @word)
+            [:tr [:td "Status:"] [:td (game/display-result @word)]])]]]])))

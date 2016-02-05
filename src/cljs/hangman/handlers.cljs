@@ -5,10 +5,10 @@
 (re-frame/register-handler
  :initialize-db
  (fn  [_ _]
-   db/hangman))
+   db/state))
 
 (re-frame/register-handler
  :try-letter
  (fn  [db [_ letter]]
-   (update db :display-word (constantly letter))
+   (update-in db [:word :tried-letters] conj letter)
    ))

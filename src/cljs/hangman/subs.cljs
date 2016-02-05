@@ -8,6 +8,6 @@
    (reaction (:name @db))))
 
 (re-frame/register-sub
- :display-word
+ :word
  (fn [db]
-   (reaction (:display-word @db))))
+   (reaction (:word @db))))
