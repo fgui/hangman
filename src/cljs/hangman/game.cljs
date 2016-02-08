@@ -9,16 +9,18 @@
 (defn includes? [coll elem]
   ((set coll) elem))
 
-(defn misses [game-word]
+(defn errors [game-word]
   (filter
    #(not (includes? (:word-to-guess game-word) %))
    (:tried-letters game-word)))
 
 (defn num-errors [game-word]
-  (count (misses game-word)))
+  ;; escribe código para contar el número de errores.
+  5)
 
 (defn lost? [game-word]
-  (= (:max-errors config) (num-errors game-word)))
+  ;; añade código para detectar si has perdido.
+  false)
 
 (defn won? [game-word]
   (let [letters-in-word-to-guess (set (:word-to-guess game-word))
@@ -27,7 +29,8 @@
                          tried-letters)))
 
 (defn game-over? [game-word]
-  (or (lost? game-word) (won? game-word)))
+  ;; ¿ha acabado el juego?
+  false)
 
 (defn word-so-far
   [game-word]
@@ -40,8 +43,8 @@
                        (map #(if (= :no-letter %) "_" %)
                             (word-so-far game-word))))
 
-(defn display-misses [game-word]
-  (clojure.string/join ", " (misses game-word)))
+(defn display-errors [game-word]
+  (clojure.string/join ", " (errors game-word)))
 
 (defn display-result [game-word]
   (if (won? game-word) "won" "lost"))

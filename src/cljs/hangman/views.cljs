@@ -21,6 +21,6 @@
           [:table
            [:tbody
             [:tr [:td "Word:"] [:td (game/display-word @word)]]
-            [:tr [:td "Misses:"] [:td (game/display-misses @word)]]
+            [:tr [:td "Errors:"] [:td (game/display-errors @word)]]
             (when (game/game-over? @word)
               [:tr [:td "Status:"] [:td (game/display-result @word)]])]]]]]])))
