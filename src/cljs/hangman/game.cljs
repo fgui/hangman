@@ -6,15 +6,12 @@
   {:word-to-guess word
    :tried-letters []})
 
-(defn tried-letters-set [game-word]
-  (set (:tried-letters game-word)))
-
-(defn word-to-guess-set [game-word]
-  (set (:word-to-guess game-word)))
+(defn includes? [coll elem]
+  ((set coll) elem))
 
 (defn misses [game-word]
   (filter
-   #(not ((word-to-guess-set game-word) %))
+   #(not (includes? (:word-to-guess game-word) %))
    (:tried-letters game-word)))
 
 (defn num-errors [game-word]
@@ -24,16 +21,24 @@
   (= (:max-errors config) (num-errors game-word)))
 
 (defn won? [game-word]
-  (clojure.set/subset? (word-to-guess-set game-word)
-                       (tried-letters-set game-word)))
+  (let [letters-in-word-to-guess (set (:word-to-guess game-word))
+        tried-letters (set (:tried-letters game-word))]
+    (clojure.set/subset? letters-in-word-to-guess
+                         tried-letters)))
 
 (defn game-over? [game-word]
   (or (lost? game-word) (won? game-word)))
 
-(defn display-word [game-word]
+(defn word-so-far
+  [game-word]
   (map
-   #(if ((tried-letters-set game-word) %) % "_")
+   #(if (includes? (:tried-letters game-word) %) % :no-letter)
    (:word-to-guess game-word)))
+
+(defn display-word [game-word]
+  (clojure.string/join " "
+                       (map #(if (= :no-letter %) "_" %)
+                            (word-so-far game-word))))
 
 (defn display-misses [game-word]
   (clojure.string/join ", " (misses game-word)))

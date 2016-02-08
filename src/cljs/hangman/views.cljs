@@ -13,12 +13,14 @@
        {:tab-index 0
         :on-key-press on-key-press}
        [:table
-        [:td
-         [:img {:src (str "img/Hangman-" (game/num-errors @word) ".png")
-                :width "100"}]]
-        [:td
-         [:table
-          [:tr [:td "Word:"] [:td (game/display-word @word)]]
-          [:tr [:td "Misses:"] [:td (game/display-misses @word)]]
-          (when (game/game-over? @word)
-            [:tr [:td "Status:"] [:td (game/display-result @word)]])]]]])))
+        [:tbody
+         [:td
+          [:img {:src (str "img/Hangman-" (game/num-errors @word) ".png")
+                 :width "100"}]]
+         [:td
+          [:table
+           [:tbody
+            [:tr [:td "Word:"] [:td (game/display-word @word)]]
+            [:tr [:td "Misses:"] [:td (game/display-misses @word)]]
+            (when (game/game-over? @word)
+              [:tr [:td "Status:"] [:td (game/display-result @word)]])]]]]]])))
