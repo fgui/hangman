@@ -11,7 +11,9 @@
 (re-frame/register-handler
  :try-letter
  (fn  [db [_ letter]]
-   (update-in db [:word :tried-letters] conj letter)
+   (if-not (game/game-over? (:word db))
+     (update-in db [:word :tried-letters] conj letter)
+     db)
    ))
 
 (re-frame/register-handler
