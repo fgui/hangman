@@ -13,40 +13,40 @@
 (defn includes? [coll elem]
   ((set coll) elem))
 
-(defn misses [game-word]
+(defn misses [round]
   (filter
-   #(not (includes? (:word-to-guess game-word) %))
-   (:tried-letters game-word)))
+   #(not (includes? (:word-to-guess round) %))
+   (:tried-letters round)))
 
-(defn num-errors [game-word]
-  (count (misses game-word)))
+(defn num-errors [round]
+  (count (misses round)))
 
-(defn lost? [game-word]
-  (= (config :max-errors) (num-errors game-word)))
+(defn lost? [round]
+  (= (config :max-errors) (num-errors round)))
 
-(defn won? [game-word]
-  (let [letters-in-word-to-guess (set (:word-to-guess game-word))
-        tried-letters (set (:tried-letters game-word))]
+(defn won? [round]
+  (let [letters-in-word-to-guess (set (:word-to-guess round))
+        tried-letters (set (:tried-letters round))]
     (clojure.set/subset? letters-in-word-to-guess
                          tried-letters)))
 
-(defn game-over? [game-word]
-  (or (lost? game-word) (won? game-word)))
+(defn game-over? [round]
+  (or (lost? round) (won? round)))
 
 (defn word-so-far
-  [game-word]
+  [round]
   (map
-   #(if (includes? (:tried-letters game-word) %) % :no-letter)
-   (:word-to-guess game-word)))
+   #(if (includes? (:tried-letters round) %) % :no-letter)
+   (:word-to-guess round)))
 
-(defn score-misses [game-word]
-  (* (config :miss-score) (count (misses game-word))))
+(defn score-misses [round]
+  (* (config :miss-score) (count (misses round))))
 
-(defn score-hits [game-word]
-  (* (config :hit-score) (count (remove #(= % :no-letter) (word-so-far game-word)))))
+(defn score-hits [round]
+  (* (config :hit-score) (count (remove #(= % :no-letter) (word-so-far round)))))
 
-(defn score [game-word]
-  (max (config :min-score) (+ (score-misses game-word) (score-hits game-word))))
+(defn score [round]
+  (max (config :min-score) (+ (score-misses round) (score-hits round))))
 
 (defn accumulated-score [game]
   (+ 9999 (score (:word game)))
@@ -55,16 +55,16 @@
 ;;;;;;;;;
 ;;; displays
 
-(defn display-word [game-word]
+(defn display-word [round]
   (clojure.string/join " "
                        (map #(if (= :no-letter %) "_" %)
-                            (word-so-far game-word))))
+                            (word-so-far round))))
 
-(defn display-misses [game-word]
-  (clojure.string/join ", " (misses game-word)))
+(defn display-misses [round]
+  (clojure.string/join ", " (misses round)))
 
-(defn display-result [game-word]
-  (if (won? game-word) "won" "lost"))
+(defn display-result [round]
+  (if (won? round) "won" "lost"))
 
 ;; I would like to give points for each word.
 ;; You start with 100 points and each fail we subtract 10
