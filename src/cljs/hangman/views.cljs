@@ -12,11 +12,13 @@
       [:div
        {:tab-index 0
         :on-key-press on-key-press}
+       [:div "score: "  (game/score @word)]
        [:table
         [:tbody
          [:td
           [:img {:src (str "img/Hangman-" (game/num-errors @word) ".png")
-                 :width "100"}]]
+                 :width "100"
+                 :style {:border "1px solid black"} }]]
          [:td
           [:table
            [:tbody

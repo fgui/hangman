@@ -5,8 +5,5 @@
   {:name "re-frame"})
 
 (def state {
-              :playerA {}
-              :playerB {}
-              :round :playerA
-              :mode :request ;; :play
-              })
+
+            })
