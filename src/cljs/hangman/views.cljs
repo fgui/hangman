@@ -38,6 +38,6 @@
               (list [:tr [:td "Status:"] [:td (game/display-result @round)]]
                     [:tr [:td {:colspan 2}
                           [:button
-                           {:on-click #(re-frame/dispatch [:new-game])}
-                           "next"]]])
+                           {:on-click #(re-frame/dispatch [:new-round])}
+                           "play again"]]])
               )]]]]]])))

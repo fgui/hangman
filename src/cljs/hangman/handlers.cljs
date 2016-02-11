@@ -28,7 +28,7 @@
    ))
 
 (re-frame/register-handler
- :new-game
+ :new-round
  (fn [db [_ _]]
    (new-random-word
     (update db :accumulated-score + (game/accumulated-score db))
