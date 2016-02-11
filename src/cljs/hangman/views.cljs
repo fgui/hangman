@@ -23,4 +23,9 @@
             [:tr [:td "Word:"] [:td (game/display-word @word)]]
             [:tr [:td "Misses:"] [:td (game/display-misses @word)]]
             (when (game/game-over? @word)
-              [:tr [:td "Status:"] [:td (game/display-result @word)]])]]]]]])))
+              (list [:tr [:td "Status:"] [:td (game/display-result @word)]]
+                    [:tr [:td {:colspan 2}
+                          [:button
+                           {:on-click #(re-frame/dispatch [:new-game])}
+                           "next"]]])
+              )]]]]]])))
