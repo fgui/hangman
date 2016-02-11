@@ -1,18 +1,14 @@
 (ns hangman.handlers
-    (:require [re-frame.core :as re-frame]
-              [hangman.db :as db]
-              [hangman.game :as game]
-              [hangman.dictionary :as dictionary]
-              ))
-
+  (:require [re-frame.core :as re-frame]
+            [hangman.db :as db]
+            [hangman.game :as game]
+            [hangman.dictionary :as dictionary]))
 
 (defn init-word [db word]
-  (assoc db :round (game/guess-this-word word))
-  )
+  (assoc db :round (game/guess-this-word word)))
 
 (defn new-random-word [db]
-  (init-word db (dictionary/random-word))
-  )
+  (init-word db (dictionary/random-word)))
 
 (re-frame/register-handler
  :initialize-db
@@ -24,13 +20,14 @@
  (fn  [db [_ letter]]
    (if-not (game/game-over? (:round db))
      (update-in db [:round :tried-letters] conj letter)
-     db)
-   ))
+     db)))
+
+(defn update-accumulated-score [db]
+  (update db :accumulated-score + (game/score db)))
 
 (re-frame/register-handler
  :new-round
  (fn [db [_ _]]
-   (new-random-word
-    (update db :accumulated-score + (game/accumulated-score db))
-    )
-   ))
+   (-> db
+       update-accumulated-score
+       new-random-word)))
