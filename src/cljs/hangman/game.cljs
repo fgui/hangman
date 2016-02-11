@@ -48,9 +48,8 @@
 (defn score [round]
   (max (config :min-score) (+ (score-misses round) (score-hits round))))
 
-(defn accumulated-score [game]
-  (+ 9999 (score (:word game)))
-  )
+(defn accumulated-score [state]
+  (+ (:accumulated-score state) (score (:round state))))
 
 ;;;;;;;;;
 ;;; displays

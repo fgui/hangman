@@ -7,7 +7,7 @@
 
 
 (defn init-word [db word]
-  (assoc db :word (game/guess-this-word word))
+  (assoc db :round (game/guess-this-word word))
   )
 
 (defn new-random-word [db]
@@ -22,13 +22,15 @@
 (re-frame/register-handler
  :try-letter
  (fn  [db [_ letter]]
-   (if-not (game/game-over? (:word db))
-     (update-in db [:word :tried-letters] conj letter)
+   (if-not (game/game-over? (:round db))
+     (update-in db [:round :tried-letters] conj letter)
      db)
    ))
 
 (re-frame/register-handler
  :new-game
  (fn [db [_ _]]
-   (new-random-word db)
+   (new-random-word
+    (update db :accumulated-score + (game/accumulated-score db))
+    )
    ))
