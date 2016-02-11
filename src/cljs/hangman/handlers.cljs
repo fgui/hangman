@@ -1,12 +1,23 @@
 (ns hangman.handlers
     (:require [re-frame.core :as re-frame]
               [hangman.db :as db]
-              [hangman.game :as game]))
+              [hangman.game :as game]
+              [hangman.dictionary :as dictionary]
+              ))
+
+
+(defn init-word [db word]
+  (assoc db :word (game/guess-this-word word))
+  )
+
+(defn new-random-word [db]
+  (init-word db (dictionary/random-word))
+  )
 
 (re-frame/register-handler
  :initialize-db
  (fn  [_ _]
-   db/state))
+   (new-random-word db/state)))
 
 (re-frame/register-handler
  :try-letter
@@ -17,7 +28,7 @@
    ))
 
 (re-frame/register-handler
- :init-word
- (fn [db [_ word]]
-   (assoc db :word (game/guess-this-word word))
+ :new-game
+ (fn [db [_ _]]
+   (new-random-word db)
    ))

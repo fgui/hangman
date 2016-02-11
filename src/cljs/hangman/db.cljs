@@ -4,7 +4,7 @@
 (def default-db
   {:name "re-frame"})
 
-(def state {:word (game/guess-this-word "hola")
+(def state {
               :playerA {}
               :playerB {}
               :round :playerA
