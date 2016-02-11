@@ -6,13 +6,18 @@
   (re-frame/dispatch [:try-letter (char (.-which event))])
   )
 
+(defn score-component [word]
+  (list [:div "total score: "  (game/accumulated-score {:word word})]
+        [:div "score: "  (game/score word)])
+  )
+
 (defn main-panel []
   (let [word (re-frame/subscribe [:word])]
     (fn []
       [:div
        {:tab-index 0
         :on-key-press on-key-press}
-       [:div "score: "  (game/score @word)]
+       (score-component @word)
        [:table
         [:tbody
          [:td

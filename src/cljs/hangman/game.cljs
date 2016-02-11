@@ -48,6 +48,10 @@
 (defn score [game-word]
   (max (config :min-score) (+ (score-misses game-word) (score-hits game-word))))
 
+(defn accumulated-score [game]
+  (+ 9999 (score (:word game)))
+  )
+
 ;;;;;;;;;
 ;;; displays
 
