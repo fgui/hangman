@@ -23,7 +23,7 @@
      db)))
 
 (defn update-accumulated-score [db]
-  (update db :accumulated-score + (game/score db)))
+  (update db :accumulated-score + (game/score (:round db))))
 
 (re-frame/register-handler
  :new-round
