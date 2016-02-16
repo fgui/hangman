@@ -1,5 +1,4 @@
-(ns hangman.db
-  (:require [hangman.game :as game]))
+(ns hangman.db)
 
 (def default-db
   {:name "re-frame"})

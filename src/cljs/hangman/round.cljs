@@ -1,4 +1,4 @@
-(ns hangman.game)
+(ns hangman.round)
 
 (def config
   {:max-errors 10
@@ -30,7 +30,7 @@
     (clojure.set/subset? letters-in-word-to-guess
                          tried-letters)))
 
-(defn game-over? [round]
+(defn over? [round]
   (or (lost? round) (won? round)))
 
 (defn word-so-far
