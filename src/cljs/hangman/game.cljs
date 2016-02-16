@@ -51,19 +51,6 @@
 (defn accumulated-score [state]
   (+ (:accumulated-score state) (score (:round state))))
 
-;;;;;;;;;
-;;; displays
-
-(defn display-word [round]
-  (clojure.string/join " "
-                       (map #(if (= :no-letter %) "_" %)
-                            (word-so-far round))))
-
-(defn display-misses [round]
-  (clojure.string/join ", " (misses round)))
-
-(defn display-result [round]
-  (if (won? round) "won" "lost"))
 
 ;; I would like to give points for each word.
 ;; You start with 100 points and each fail we subtract 10

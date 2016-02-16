@@ -6,6 +6,19 @@
   (re-frame/dispatch [:try-letter (char (.-which event))])
   )
 
+
+(defn display-word [round]
+  (clojure.string/join " "
+                       (map #(if (= :no-letter %) "_" %)
+                            (game/word-so-far round))))
+
+(defn display-misses [round]
+  (clojure.string/join ", " (game/misses round)))
+
+(defn display-result [round]
+  (if (game/won? round) "won" "lost"))
+
+
 (defn score-component []
   (let [state (re-frame/subscribe [:state])
         round (re-frame/subscribe [:round])]
@@ -14,6 +27,25 @@
        [:div "total score: "
              (game/accumulated-score @state)]
        [:div "score: "  (game/score @round)]]))
+  )
+
+(defn show-letter [guess letter]
+  [:span
+   {:style (when-not (= guess letter) {:color :red})} letter]
+  )
+
+(defn mark-misses [round]
+  (map show-letter (game/word-so-far round) (:word-to-guess round))
+  )
+
+(defn word-component[]
+  (let [round (re-frame/subscribe [:round])]
+    (fn []
+      [:div (if (game/lost? @round)
+              (mark-misses @round)
+              (display-word @round))]
+      )
+    )
   )
 
 (defn main-panel []
@@ -32,10 +64,10 @@
          [:td
           [:table
            [:tbody
-            [:tr [:td "Word:"] [:td (game/display-word @round)]]
-            [:tr [:td "Misses:"] [:td (game/display-misses @round)]]
+            [:tr [:td "Word:"] [:td [word-component]]]
+            [:tr [:td "Misses:"] [:td (display-misses @round)]]
             (when (game/game-over? @round)
-              (list [:tr [:td "Status:"] [:td (game/display-result @round)]]
+              (list [:tr [:td "Status:"] [:td (display-result @round)]]
                     [:tr [:td {:colspan 2}
                           [:button
                            {:on-click #(re-frame/dispatch [:new-round])}
