@@ -13,6 +13,13 @@
   (reagent/render [views/main-panel]
                   (.getElementById js/document "app")))
 
+(defn on-key-press [event]
+  (re-frame/dispatch [:try-letter (char (.-which event))]))
+
+(defn listen-key-press []
+  (.addEventListener js/document "keypress" on-key-press))
+
 (defn ^:export init []
   (re-frame/dispatch-sync [:initialize-db])
+  (listen-key-press)
   (mount-root))
