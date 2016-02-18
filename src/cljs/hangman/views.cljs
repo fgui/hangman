@@ -29,20 +29,25 @@
        [:div "score: "  (round/score @round)]]))
   )
 
-(defn show-letter [guess letter]
-  [:span
-   {:style (when-not (= guess letter) {:color :red})} letter]
+(defn letter-color [guess letter]
+  (if (= guess letter) :green :red)
   )
 
-(defn mark-misses [round]
+(defn show-letter [guess letter]
+  [:span
+   {:style {:color (letter-color guess letter)}}
+   (str letter " ")]
+  )
+
+(defn display-resulting-word [round]
   (map show-letter (round/word-so-far round) (:word-to-guess round))
   )
 
 (defn word-component[]
   (let [round (re-frame/subscribe [:round])]
     (fn []
-      [:div (if (round/lost? @round)
-              (mark-misses @round)
+      [:div (if (round/over? @round)
+              (display-resulting-word @round)
               (display-word @round))]
       )
     )
