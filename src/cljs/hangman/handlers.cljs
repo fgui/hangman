@@ -31,3 +31,8 @@
    (-> db
        update-accumulated-score
        new-random-word)))
+
+(re-frame/register-handler
+ :new-language
+ (fn [db [_ language]]
+   (assoc db :language language)))

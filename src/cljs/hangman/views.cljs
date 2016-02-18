@@ -46,6 +46,17 @@
               (display-resulting-word @round)
               (display-word @round))])))
 
+(defn choose-language [lang]
+  (re-frame/dispatch [:new-language lang])
+  false ;; prevent default event
+  )
+
+(defn choose-language-component []
+  [:div
+   [:a {:href "#" :on-click #(choose-language :es)} "es"] " / "
+   [:a {:href "#" :on-click #(choose-language :en)} "en"]
+   ])
+
 (defn main-panel []
   (let [round (re-frame/subscribe [:round])
         language (re-frame/subscribe [:language])
@@ -54,6 +65,7 @@
       [:div
        {:tab-index 0
         :on-key-press on-key-press}
+       [:div {:style {:float :right}} [choose-language-component]]
        [score-component]
        [:table
         [:tbody
