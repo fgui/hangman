@@ -1,12 +1,9 @@
-(ns hangman.db
-  (:require [hangman.game :as game]))
+(ns hangman.db)
 
 (def default-db
   {:name "re-frame"})
 
-(def state {:word (game/guess-this-word "hola")
-              :playerA {}
-              :playerB {}
-              :round :playerA
-              :mode :request ;; :play
-              })
+(def state {:language :en
+            :accumulated-score 0
+            :round {:word "word-to-guess" :tried-letters []}
+            })
