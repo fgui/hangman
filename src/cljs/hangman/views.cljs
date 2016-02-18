@@ -14,18 +14,19 @@
 (defn display-misses [round]
   (clojure.string/join ", " (round/misses round)))
 
-(defn display-result [round]
+(defn display-result [round language]
   (if (round/won? round)
-    (i18n/translate :es :won)
-    (i18n/translate :es :lost)))
+    (i18n/translate language :won)
+    (i18n/translate language :lost)))
 
 (defn score-component []
   (let [state (re-frame/subscribe [:state])
-        round (re-frame/subscribe [:round])]
+        round (re-frame/subscribe [:round])
+        language (re-frame/subscribe [:language])]
     (fn []
       [:div
-       [:div (str (i18n/translate :es :total-score) " " (round/accumulated-score @state))]
-       [:div (str (i18n/translate :es :score) " "  (round/score @round))]])))
+       [:div (str (i18n/translate @language :total-score) " " (round/accumulated-score @state))]
+       [:div (str (i18n/translate @language :score) " "  (round/score @round))]])))
 
 (defn letter-color [guess letter]
   (if (= guess letter) :green :red))
@@ -46,7 +47,9 @@
               (display-word @round))])))
 
 (defn main-panel []
-  (let [round (re-frame/subscribe [:round])]
+  (let [round (re-frame/subscribe [:round])
+        language (re-frame/subscribe [:language])
+        ]
     (fn []
       [:div
        {:tab-index 0
@@ -61,11 +64,11 @@
          [:td
           [:table
            [:tbody
-            [:tr [:td (i18n/translate :es :word)] [:td [word-component]]]
-            [:tr [:td (i18n/translate :es :misses)] [:td (display-misses @round)]]
+            [:tr [:td (i18n/translate @language :word)] [:td [word-component]]]
+            [:tr [:td (i18n/translate @language :misses)] [:td (display-misses @round)]]
             (when (round/over? @round)
-              (list [:tr [:td (i18n/translate :es :status)] [:td (display-result @round)]]
+              (list [:tr [:td (i18n/translate @language :status)] [:td (display-result @round @language)]]
                     [:tr [:td {:colspan 2}
                           [:button
                            {:on-click #(re-frame/dispatch [:new-round])}
-                           (i18n/translate :es :play-again)]]]))]]]]]])))
+                           (i18n/translate @language :play-again)]]]))]]]]]])))

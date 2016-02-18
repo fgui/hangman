@@ -16,3 +16,8 @@
  :state
  (fn [db]
    (reaction @db)))
+
+(re-frame/register-sub
+ :language
+ (fn [db]
+   (reaction (:language @db))))
