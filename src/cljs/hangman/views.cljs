@@ -3,9 +3,6 @@
             [hangman.round :as round]
             [hangman.i18n :as i18n]))
 
-(defn on-key-press [event]
-  (re-frame/dispatch [:try-letter (char (.-which event))]))
-
 (defn display-word [round]
   (clojure.string/join " "
                        (map #(if (= :no-letter %) "_" %)
@@ -70,8 +67,6 @@
         language (re-frame/subscribe [:language])]
     (fn []
       [:div
-       {:tab-index 0
-        :on-key-press on-key-press}
        [:div {:style {:float :right}} (make-language-components)]
        [score-component]
        [:table
