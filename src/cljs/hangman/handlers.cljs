@@ -8,7 +8,7 @@
   (assoc db :round (round/guess-this-word word)))
 
 (defn new-random-word [db]
-  (init-word db (dictionary/random-word)))
+  (init-word db (dictionary/random-word (:language db))))
 
 (re-frame/register-handler
  :initialize-db

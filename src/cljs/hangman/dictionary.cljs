@@ -1,4 +1,10 @@
 (ns hangman.dictionary)
 
-(def words ["clojure" "ruby" "python" "java"])
-(defn random-word [] (rand-nth words))
+(def words
+  {:en
+   ["clojure" "ruby" "python" "java"]
+   :es
+   ["hola" "mundo" "café"]
+   })
+
+(defn random-word [language] (rand-nth (words language)))

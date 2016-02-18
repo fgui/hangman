@@ -49,23 +49,30 @@
 (defn choose-language [lang]
   (re-frame/dispatch [:new-language lang])
   false ;; prevent default event
-  )
+)
 
-(defn choose-language-component []
-  [:div
-   [:a {:href "#" :on-click #(choose-language :es)} "es"] " / "
-   [:a {:href "#" :on-click #(choose-language :en)} "en"]
-   ])
+(defn language-link-component [key]
+  (let [language (re-frame/subscribe [:language])]
+    (fn []
+      [:a {:href "#" :on-click #(choose-language key)
+           :style (when (= @language key) {:font-weight :bold})}
+       (i18n/translate key :language-name)])))
+
+(defn make-language-components []
+  (->> i18n/dictionary
+       keys
+       (map #(vector language-link-component %))
+       (interleave (repeat " / "))
+       (drop 1)))
 
 (defn main-panel []
   (let [round (re-frame/subscribe [:round])
-        language (re-frame/subscribe [:language])
-        ]
+        language (re-frame/subscribe [:language])]
     (fn []
       [:div
        {:tab-index 0
         :on-key-press on-key-press}
-       [:div {:style {:float :right}} [choose-language-component]]
+       [:div {:style {:float :right}} (make-language-components)]
        [score-component]
        [:table
         [:tbody

@@ -1,7 +1,8 @@
 (ns hangman.i18n)
 
 (def dictionary
-  {:en {:word "Word:"
+  {:en {:language-name "english"
+        :word "Word:"
         :misses "Misses:"
         :status "Status:"
         :score "Score:"
@@ -9,7 +10,8 @@
         :won "Won"
         :lost "Lost"
         :play-again "Play again"}
-   :es {:word "Palabra:"
+   :es {:language-name "español"
+        :word "Palabra:"
         :misses "Fallos:"
         :status "Estado:"
         :score "Puntuación:"
